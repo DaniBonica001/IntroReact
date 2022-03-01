@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="simple-component"></div>
+    <div id="stateful-component1"></div>
+    <div id="stateful-component2"></div>
+    <div id="an-application"></div>
+    <div id="component-markdown"></div>
+    <script type="text/babel">
+
+        class HelloMessage extends React.Component {
+            render() {
+                return (
+                    <div>
+                        <h3>Simple component</h3>
+                        Hello {this.props.name}
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <HelloMessage name="Daniela y Juan Felipe" />,
+            document.getElementById('simple-component')
+        );
+
+
+        class Timer extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { time: {}, seconds: 0 };
+                this.timer = 0;
+            }
+
+
+            secondsToTime(secs) {
+                let hours = Math.floor(secs / (60 * 60));
+
+                let divisor_for_minutes = secs % (60 * 60);
+                let minutes = Math.floor(divisor_for_minutes / 60);
+
+                let divisor_for_seconds = divisor_for_minutes % 60;
+                let seconds = Math.ceil(divisor_for_seconds);
+
+                let obj = {
+                    "h": hours,
+                    "m": minutes,
+                    "s": seconds
+                };
+                return obj;
+            }
+
+            tick() {
+                this.setState(state => ({ seconds: state.seconds + 1 }));
+                let addTimeVar = this.secondsToTime(this.state.seconds);
+                this.setState({ time: addTimeVar });
+
+            }
+
+            componentDidMount() {
+                this.interval = setInterval(() => this.tick(), 1000);
+            }
+
+            componentWillUnmount() {
+                clearInterval(this.interval);
+            }
+
+            render() {
+                return (
+                    <div>
+                        <h3>Stateful component 1</h3>
+                        {this.state.time.h}:{this.state.time.m}:{this.state.time.s}
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <Timer />,
+            document.getElementById('stateful-component1')
+        );
+
+
+        class TimerEveryTen extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { time: {}, seconds: 0 };
+                this.timer = 0;
+            }
+
+
+            secondsToTime(secs) {
+                let hours = Math.floor(secs / (10 * 10));
+
+                let divisor_for_minutes = secs % (10 * 10);
+                let minutes = Math.floor(divisor_for_minutes / 10);
+
+                let divisor_for_seconds = divisor_for_minutes % 10;
+                let seconds = Math.ceil(divisor_for_seconds);
+
+                let obj = {
+                    "h": hours,
+                    "m": minutes,
+                    "s": seconds
+                };
+                return obj;
+            }
+
+            tick() {
+                this.setState(state => ({ seconds: state.seconds + 1 }));
+                let addTimeVar = this.secondsToTime(this.state.seconds);
+                this.setState({ time: addTimeVar });
+
+            }
+
+            componentDidMount() {
+                this.interval = setInterval(() => this.tick(), 1000);
+            }
+
+            componentWillUnmount() {
+                clearInterval(this.interval);
+            }
+
+            render() {
+                return (
+                    <div>
+                        <h3>Stateful component 2</h3>
+                        {this.state.time.h}:{this.state.time.m}:{this.state.time.s}
+                    </div>
+                );
+            }
+        }
+
+
+        ReactDOM.render(
+            <TimerEveryTen />,
+            document.getElementById('stateful-component2')
+        );
+
+
+        
+    </script>
+</body>
+
+</html>
